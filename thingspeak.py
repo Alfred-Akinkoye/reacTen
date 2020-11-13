@@ -13,11 +13,13 @@ TaiyeChannelC1r = "KSW0O5SZVNZP6LC9"
 TaiyeChannelC2w = "3I8BF8VYE42TX9KC"
 TaiyeChannelC2r = "BBAQRG5FQB0VGJS5"
 keyDelightD1w = "R9H809YX4MUSNPG1"    #Status Channel
+#Alfred
+write_key = "FJX6WIJU2SA4BYJ0"
 
 def send_status(error):
 
      while True:
-        params = urllib.urlencode({'field1':error,'field2':0, key:TaiyeChannelC2w})
+        params = urllib.urlencode({'field1':error,'field2':0, 'key' :TaiyeChannelC2w})
         headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
         conn = httplib.HTTPConnection("api.thingspeak.com:80")
         try:
@@ -199,8 +201,8 @@ if __name__ == "__main__":
             #demo_status_sequence()
             #demo_receive_message()
             #send_message_sample(12)
-            #send_status(002)
-            #test_receive()
+            #send_status(006)
+            test_receive()
 
         except KeyboardInterrupt:
             print('Done')
