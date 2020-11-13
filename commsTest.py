@@ -33,7 +33,7 @@ def send_status(error):
 
 def get_message():
     
-    URL='https://api.thingspeak.com/channels/1159985/fields/1.json?api_key='
+    URL='https://api.thingspeak.com/channels/1159985/feeds.json?api_key='
     KEY= keyJulianB1r
     HEADER='&results='
     NUMSIGNALS = '1' 
@@ -64,13 +64,16 @@ def demo_receive_message():
                 curr_id = mess_id
                 print('New Message Received')
                 print('The message is: ' + received)
-                if message == 'shootBall':
-                    currSpeed = action[0]['field2']
-                    print('The ball is getting ready to be shot at: ', currSpeed, ' %')
-                if message == 'startGame':
-                    print('The ballShooter is initializing...')        
-                if message == 'finishGame':
-                    print('The ballShooter is getting deactivated')                    
+                print('field2 = ' +str(action[0]['field2']))
+                print('field3 = ' +str(action[0]['field3']))
+                print('field4 = ' +str(action[0]['field4']))
+                #if message == 'shootBall':
+                    #currSpeed = action[0]['field2']
+                    #print('The ball is getting ready to be shot at: ', currSpeed, ' %')
+                #if message == 'startGame':
+                    #print('The ballShooter is initializing...')        
+                #if message == 'finishGame':
+                    #print('The ballShooter is getting deactivated')                    
 
             time.sleep(5)            
 
@@ -101,8 +104,10 @@ if __name__ == "__main__":
         
         try:
             #demo_status_sequence()
-            #demo_receive_message()
-            send_status(110)
+            demo_receive_message()
+            #send_status(110)
             
         except KeyboardInterrupt:
             print('Done')
+            
+       
