@@ -1,3 +1,5 @@
+"""Code to demo the BallShooter Server communications in ThingSpeak"""
+
 import httplib
 import urllib
 import time
