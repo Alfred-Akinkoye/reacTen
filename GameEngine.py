@@ -1,3 +1,5 @@
+#Alfred Akinkoye
+#PYTHON 3.0
 ##Game Logic
 from CreateTables import *    #for database logic
 from NavTable import *      #for reading and writing to table
@@ -11,4 +13,9 @@ from Read_Write_TS import *
 match_id = 0
 #ThingSpeak Setup
 #readShooterStatus()
-writeStart_End('start',0,5,3)
+#readBallForce()
+writeStart_EndP2("startGame",2,3,4)
+#finishGame
+#shootBall
+#readSimuStatus()
+#readTargetInfo()
