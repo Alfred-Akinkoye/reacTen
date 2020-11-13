@@ -50,73 +50,7 @@ def get_message():
     for x in field_1:
         t.append(x['field1']) 
     
-    return last_entry_id, get_data
-
-
-def send_message_sample():
-    RUNNING = 'running'
-    SHOOTER = 'ballShooter'
-    PROX = 'proximitySensor'
-    SERVO = 'servoMotor'
-    
-    status = SHOOTER
-    
-    
-    ##Error Message from ballshooter
-    #params = urllib.urlencode({'field1':status, 'key':keyJulianB2w }) 
-    #headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    #conn = httplib.HTTPConnection("api.thingspeak.com:80")
-    #try:
-        #conn.request("POST", "/update", params, headers)
-        #response = conn.getresponse()
-        ##print(response.status, response.reason)
-        #data = response.read()
-        #conn.close()
-    #except:
-        #print ("connection failed")
-  
-
-
-    ##Message for shootBall at 50%
-    #params = urllib.urlencode({'field3': 'shootBall','field4': '50', 'key':keyJulianB2w }) 
-    #headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    #conn = httplib.HTTPConnection("api.thingspeak.com:80")    
-    #try:
-        #conn.request("POST", "/update", params, headers)
-        #response = conn.getresponse()
-        ##print(response.status, response.reason)
-        #data = response.read()
-        #conn.close()
-    #except:
-        #print ("connection failed")
-        
-        
-    #Message for startGame
-    params = urllib.urlencode({'field1': 'startGame','field2': '20','field3': '40','field4': '5', 'key':keyJulianB1w }) 
-    headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    conn = httplib.HTTPConnection("api.thingspeak.com:80")    
-    try:
-        conn.request("POST", "/update", params, headers)
-        response = conn.getresponse()
-        #print(response.status, response.reason)
-        data = response.read()
-        conn.close()
-    except:
-        print ("connection failed")      
-        
-    
-    #Message for finishGame
-    params = urllib.urlencode({'field1': 'finishGame', 'key':keyJulianB1w }) 
-    headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
-    conn = httplib.HTTPConnection("api.thingspeak.com:80")    
-    try:
-        conn.request("POST", "/update", params, headers)
-        response = conn.getresponse()
-        #print(response.status, response.reason)
-        data = response.read()
-        conn.close()
-    except:
-        print ("connection failed")          
+    return last_entry_id, get_data  
   
 
 def demo_receive_message():
@@ -125,20 +59,28 @@ def demo_receive_message():
         while True:
             mess_id, message =get_message()
             action = message['feeds']
-            for data in action:
-                if curr_id < mess_id:
-                    curr_id = mess_id
-                    print('New Message Received')
-                    print('The message is; ', str(data))
-                    if message == 'shootBall':
-                        print('The ball is getting ready to be shot...')
-            
+            received = str(action[0]['field1'])
+            if curr_id < mess_id:
+                curr_id = mess_id
+                print('New Message Received')
+                print('The message is: ' + received)
+                if message == 'shootBall':
+                    currSpeed = action[0]['field2']
+                    print('The ball is getting ready to be shot at: ', currSpeed, ' %')
+                if message == 'startGame':
+                    print('The ballShooter is initializing...')        
+                if message == 'finishGame':
+                    print('The ballShooter is getting deactivated')                    
+
             time.sleep(5)            
 
     except KeyboardInterrupt:
             print('Done status')
             
-def demo_status():
+def demo_status_single(error):
+    send_status(error)      
+
+def demo_status_sequence():
     try:
         while True:
             error = 110
@@ -158,7 +100,9 @@ def demo_status():
 if __name__ == "__main__":
         
         try:
-            #demo_status()
-            demo_receive_message()
+            #demo_status_sequence()
+            #demo_receive_message()
+            send_status(110)
+            
         except KeyboardInterrupt:
             print('Done')
