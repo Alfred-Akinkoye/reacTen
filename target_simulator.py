@@ -30,14 +30,14 @@ def send_status():
         print ("connection failed")
 
 def send_hit():
-    hit = True
+    hit = 1
     params = urllib.parse.urlencode({'field2': hit, 'key':hitwrite })
     headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
     conn = http.client.HTTPConnection("api.thingspeak.com:80")
     try:
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
-        print (status)
+        print (hit)
         print (response.status, response.reason)
         data = response.read()
         conn.close()
@@ -45,14 +45,14 @@ def send_hit():
         print ("connection failed")
         
 def send_miss():
-    hit = False
+    hit = 0
     params = urllib.parse.urlencode({'field2': hit, 'key':hitwrite })
     headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
     conn = http.client.HTTPConnection("api.thingspeak.com:80")
     try:
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
-        print (status)
+        print (hit)
         print (response.status, response.reason)
         data = response.read()
         conn.close()
@@ -99,13 +99,3 @@ def main():
 if __name__ == "__main__":
     main()
     
-    
-    ##59EV92UFH25MFELC
-##https://api.thingspeak.com/channels/1180930/fields/1.json?api_key=OGZPXUJ66L9TX6M7&results=2
- #url = 'https://api.thingspeak.com/channels/1159985/feeds.json?api_key=59EV92UFH25MFELC&results=2'
-    #print (url)
-    #get_data = requests.get(url).json()
-    #subject = get_data["feeds"]
-    #current = subject[0]
-    #print(current["field1"])
-    #U8Y5A1WG8Y5NL3WP
