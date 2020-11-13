@@ -68,7 +68,9 @@ def get_start_and_end():
      subject = get_data["feeds"]
      current = subject[0]
      print(current["field1"])
-    
+     print(current["field2"])
+     print(current["field3"])
+     print(current["field4"])
 def get_shootball():
     url = 'https://api.thingspeak.com/channels/1159985/feeds.json?api_key=59EV92UFH25MFELC&results=1'
     #print (url)
@@ -76,6 +78,9 @@ def get_shootball():
     subject = get_data["feeds"]
     current = subject[0]
     print(current["field1"])
+    print(current["field2"])
+    print(current["field3"])
+    print(current["field4"])
 
 def simulated_force():
     ballForce = random.randint(0,50)
