@@ -6,24 +6,25 @@ import threading
 import requests
 import json
 
-keyJulianB1r = "59EV92UFH25MFELC"
+keyJulianB1r = "59EV92UFH25MFELC"      #MessageChannel
 keyJulianB1w = "KWCJB4XPZW92YT2R"  
 keyJulianB2r = "OGZPXUJ66L9TX6M7"
 keyJulianB2w = "U8Y5A1WG8Y5NL3WP"
 
+keyDelightD1w = "R9H809YX4MUSNPG1"    #Status Channel
 
 
-def send_status():
-    status = 'test'
+def send_status(error):
     
     while True:
-        params = urllib.urlencode({'field1': [status, 10],'field2': 10, 'key':keyJulianB1r }) 
+        params = urllib.urlencode({'field1': error, 'key':keyDelightD1w}) 
         headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
         conn = httplib.HTTPConnection("api.thingspeak.com:80")
         try:
             conn.request("POST", "/update", params, headers)
             response = conn.getresponse()
             print(response.status, response.reason)
+            print('The error message sent was: ', error)
             data = response.read()
             conn.close()
         except:
@@ -35,28 +36,22 @@ def get_message():
     URL='https://api.thingspeak.com/channels/1159985/fields/1.json?api_key='
     KEY= keyJulianB1r
     HEADER='&results='
-    NUMSIGNALS = '4' 
+    NUMSIGNALS = '1' 
     NEW_URL=URL+KEY+HEADER+NUMSIGNALS    
     
     get_data=requests.get(NEW_URL).json()
-    print('The type of the JSON data is; ', type(get_data))
+    #print('The type of the JSON data is; ', type(get_data))
+    last_entry_id = get_data['channel']['last_entry_id']
     channel_id=get_data['channel']['id']
     
     field_1=get_data['feeds']
     
     t=[]
     for x in field_1:
-        #print(x['field1'])
-        #print(x['field1'][0])
-        #print(type(x['field1']))
-        #print(type(str(x['field1'])))
-        #print(str(x['field1']))
-        t.append(x['field1'])    
-        #print(int('10'))
-        #print(type(int('10')))
-        #print(bool("True"))
-        #if bool('True'):
-            #print("Success")
+        t.append(x['field1']) 
+    
+    return last_entry_id, get_data
+
 
 def send_message_sample():
     RUNNING = 'running'
@@ -122,29 +117,48 @@ def send_message_sample():
         conn.close()
     except:
         print ("connection failed")          
-        
-        
-        
-        
-    
+  
 
+def demo_receive_message():
+    curr_id = -1
+    try:
+        while True:
+            mess_id, message =get_message()
+            action = message['feeds']
+            for data in action:
+                if curr_id < mess_id:
+                    curr_id = mess_id
+                    print('New Message Received')
+                    print('The message is; ', str(data))
+                    if message == 'shootBall':
+                        print('The ball is getting ready to be shot...')
+            
+            time.sleep(5)            
 
+    except KeyboardInterrupt:
+            print('Done status')
+            
+def demo_status():
+    try:
+        while True:
+            error = 110
+            send_status(error)   
+            time.sleep(5)
+            error = 0
+            send_status(error)
+            time.sleep(5)
+            error = 12
+            send_status(error)
+            time.sleep(5)            
 
-    
+    except KeyboardInterrupt:
+            print('Done status')    
+
     
 if __name__ == "__main__":
         
         try:
-            #frequency = 5  #Seconds
-            #while True:
-                    #send_status()        
-                    #time.sleep(frequency)
-            
-            #get_message()
-            
-            send_message_sample()
-            send_message_sample()
-            send_message_sample()
-     
+            #demo_status()
+            demo_receive_message()
         except KeyboardInterrupt:
-                print('Done')
+            print('Done')
