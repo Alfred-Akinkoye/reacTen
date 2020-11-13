@@ -10,5 +10,5 @@ from Read_Write_TS import *
 #creates any required Table
 match_id = 0
 #ThingSpeak Setup
-writeStart_End("start",10,50,3)
-read()
+#readShooterStatus()
+writeStart_End('start',0,5,3)
