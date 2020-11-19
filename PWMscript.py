@@ -19,3 +19,8 @@ while True:
         pi_pwm.ChangeDutyCycle(duty)
         sleep(0.01)
     sleep(0.5)
+
+
+#Code to stop and clean up
+p.stop()
+GPIO.cleanup()
