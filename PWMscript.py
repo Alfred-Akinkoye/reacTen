@@ -22,5 +22,5 @@ while True:
 
 
 #Code to stop and clean up
-p.stop()
+pi_pwm.stop()
 GPIO.cleanup()
