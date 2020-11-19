@@ -1,6 +1,16 @@
+##PWM Modules
+import RPi.GPIO as GPIO
+from time import sleep
+
+
+PWMPIN = 12
+PWMPERIOD = 1000
+
 OFF = 0
 LOWLIMIT = 40
 HIGHLIMIT = 100
+
+
 
 
 class ballShooter:
@@ -10,6 +20,8 @@ class ballShooter:
         self.lowLimit = lowLimit
         self.highLimit = highLimit
         self.currSpeed = currSpeed
+        
+        self.pwm = __initPWM()
     
     ##Public Methods
     def setSpeed(newSpeed):
@@ -33,6 +45,8 @@ class ballShooter:
         if (self.idle == False):
             return False        
         #Stop the motor to off
+        self.pwm.stop()
+        GPIO.cleanup()        
 
         self.idle = False
         return True
@@ -42,13 +56,20 @@ class ballShooter:
         if (self.idle == True) :
             return False        
         #Start the motor at lowest speed
+        self.pwm.start(LOWLIMIT)
         
         self.idle = True
         return True
     
     ##Private Methods
     def __initPWM():
-        return True
+        ledpin = PWMPIN				# PWM pin connected to LED
+        GPIO.setwarnings(False)			#disable warnings
+        GPIO.setmode(GPIO.BOARD)		#set pin numbering system
+        GPIO.setup(ledpin,GPIO.OUT)
+        pi_pwm = GPIO.PWM(ledpin,PWMPERIOD)		#create PWM instance with frequency        
+        
+        return pi_pwm
     
     
     
