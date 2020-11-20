@@ -10,6 +10,9 @@ import json
 
 import ballShooter as bl
 
+DEF_BALLS = 3
+NOERROR = 0
+
 
 ##Keys
 #keyJulianB1r = "59EV92UFH25MFELC"            #MessageChannel
@@ -24,7 +27,7 @@ statusChannel = "R9H809YX4MUSNPG1"
 class ballShooterServer:
     
     """Constructor for the class"""
-    def __init__(self, ballsLeft = None, statusMessage = None):
+    def __init__(self, ballsLeft = DEF_BALLS, statusMessage = NOERROR):
         self.ballsLeft = ballsLeft
         self.statusMessage = statusMessage
         
