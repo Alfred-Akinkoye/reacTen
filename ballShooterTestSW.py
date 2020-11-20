@@ -22,10 +22,10 @@ class TestBallShooter(unittest.TestCase):
         self.assertEqual(testBl.currSpeed,20, 'Unsuccessfull speed change')  
         
         self.assertTrue(testBl.setSpeed(-20), 'Unsuccessful return')
-        self.assertEqual(testBl.currSpeed,0, 'Unsuccessfull negative value handling')   
+        self.assertEqual(testBl.currSpeed,LOWLIMIT, 'Unsuccessfull negative value handling')   
         
         self.assertTrue(testBl.setSpeed(120), 'Unsuccessful return')
-        self.assertEqual(testBl.currSpeed,100, 'Unsuccessfull too large value handling')                
+        self.assertEqual(testBl.currSpeed,HIGHLIMIT, 'Unsuccessfull too large value handling')                
         
     def test_setLimits(self):
         testBl = bl.ballShooter()
@@ -37,12 +37,33 @@ class TestBallShooter(unittest.TestCase):
         self.assertEqual(testBl.highLimit,40, 'Unsuccessfull highLimit change')
         
         self.assertTrue(testBl.setLimits(-10, 40), 'Unsuccessful return')
-        self.assertEqual(testBl.lowLimit,10, 'Unsuccessfull lowLimit change')
+        self.assertEqual(testBl.lowLimit,LOWLIMIT, 'Unsuccessfull lowLimit change')
         self.assertEqual(testBl.highLimit,40, 'Unsuccessfull highLimit change')        
         
         self.assertFalse(testBl.setLimits(50, 30), 'Unsuccessful return for incompatible low and highlimit')
-        self.assertEqual(testBl.lowLimit,10, 'Unsuccessfull lowLimit handling for incompatible low and highlimit values')
+        self.assertEqual(testBl.lowLimit,LOWLIMIT, 'Unsuccessfull lowLimit handling for incompatible low and highlimit values')
         self.assertEqual(testBl.highLimit,40, 'Unsuccessfull lhighLimit handling for incompatible low and highlimit values')        
+        
+    def test_turnOff(self):
+        testBl = bl.ballShooter()
+        
+        self.assertFalse(testBl.idle, 'Unsuccessfull iddle initialization to False')
+        self.assertFalse(testBl.turnOff(), 'Unsuccessfull return')
+        
+        testBl.idle = True
+        
+        self.assertTrue(testBl.turnOff(), 'Unsuccessfull return')
+        self.assertFalse(testBl.idle, 'Unsuccessfull idle update')
+        
+        
+    def test_turnOn(self):
+        testBl = bl.ballShooter()   
+        
+        self.assertTrue(testBl.turnOn(), 'Unsuccessfull return')
+        self.assertTrue(testBl.idle, 'Unsuccessfull idle update')        
+        
+        self.assertFalse(testBl.turnOn(), 'Unsuccessfull return')
+        self.assertTrue(testBl.idle, 'Unsuccessfull idle no change handling')        
         
         
         
