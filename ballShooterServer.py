@@ -8,6 +8,7 @@ import threading
 import requests
 import json
 
+import ballShooter as bl
 
 
 ##Keys
@@ -27,18 +28,43 @@ class ballShooterServer:
         self.ballsLeft = ballsLeft
         self.statusMessage = statusMessage
         
+        self.shooter = bl.ballShooter()
+        #initialize Proximity Sensor
+        #initialize ServoMotor
+        
+        
     ##Public Methods
     def status(self):
-        return 0         #Assuming no errors
+        statusMessage = self.shooter.status()
+        return statusMessage         #Assuming no errors
     
-    def shootBall(self):
-        return False
+    def shootBall(self, newSpeed):
+        if (ballsLeft == 0):
+            return False
+        
+        #check proximity sensor if somebody, then change status and stop action
+        self.shooter.setSpeed(newSpeed)
+        #release a ball
+        self.ballsLeft -= 1
+        
+        return True
     
-    def startGame(self):
-        return False
+    def startGame(self, lowLimit, highLimit, numBalls):
+        
+        self.ballsLeft = numBalls
+        
+        #startGame for ballShooter
+        self.shooter.setLimits(lowLimit, highLimit)
+        self.shooter.turnOn()
+        
+        #startGame for Proximity Sensor
+        return True
     
     def finishGame(self):
-        return False
+        
+        self.shooter.turnOff()
+        #finishGame for proximity sensor
+        return True
     
     
     def sendStatus(self):
