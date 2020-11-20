@@ -11,8 +11,6 @@ LOWLIMIT = 40
 HIGHLIMIT = 100
 
 
-
-
 class ballShooter:
     """Constructor for the class"""
     def __init__(self, idle = False, lowLimit = LOWLIMIT, highLimit = HIGHLIMIT, currSpeed = OFF):
@@ -21,27 +19,35 @@ class ballShooter:
         self.highLimit = highLimit
         self.currSpeed = currSpeed
         
-        self.pwm = __initPWM()
+        ledpin = PWMPIN				# PWM pin connected to LED
+        GPIO.setwarnings(False)			#disable warnings
+        GPIO.setmode(GPIO.BOARD)		#set pin numbering system
+        GPIO.setup(ledpin,GPIO.OUT)
+        
+        self.pwm = GPIO.PWM(ledpin,PWMPERIOD)		#create PWM instance with frequency                
+        
+
     
     ##Public Methods
-    def setSpeed(newSpeed):
+    def setSpeed(self, newSpeed):
         #Set duty cycle at desired speed
+        self.pwm.ChangeDutyCycle(newSpeed)
         #Calculate calibrated new speed
         self.currSpeed = newSpeed
         
         return True
     
-    def setLimits(newLowLimit, newHighLimit):
+    def setLimits(self, newLowLimit, newHighLimit):
         
         self.lowLimit = newLowLimit
         self.highLimit = newHighLimit  
         
         return True
     
-    def status():
+    def status(self):
         return True
     
-    def turnOff():
+    def turnOff(self):
         if (self.idle == False):
             return False        
         #Stop the motor to off
@@ -52,7 +58,7 @@ class ballShooter:
         return True
 
     
-    def turnOn():
+    def turnOn(self):
         if (self.idle == True) :
             return False        
         #Start the motor at lowest speed
@@ -61,15 +67,7 @@ class ballShooter:
         self.idle = True
         return True
     
-    ##Private Methods
-    def __initPWM():
-        ledpin = PWMPIN				# PWM pin connected to LED
-        GPIO.setwarnings(False)			#disable warnings
-        GPIO.setmode(GPIO.BOARD)		#set pin numbering system
-        GPIO.setup(ledpin,GPIO.OUT)
-        pi_pwm = GPIO.PWM(ledpin,PWMPERIOD)		#create PWM instance with frequency        
-        
-        return pi_pwm
+
     
     
     
