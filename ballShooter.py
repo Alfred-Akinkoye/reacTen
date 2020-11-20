@@ -7,13 +7,15 @@ PWMPIN = 12
 PWMPERIOD = 1000
 
 OFF = 0
-LOWLIMIT = 40
+LOWLIMIT = 0
 HIGHLIMIT = 100
+DEF_LOW = 40
+DEF_HIGH = 100
 
 
 class ballShooter:
     """Constructor for the class"""
-    def __init__(self, idle = False, lowLimit = LOWLIMIT, highLimit = HIGHLIMIT, currSpeed = OFF):
+    def __init__(self, idle = False, lowLimit = DEF_LOW, highLimit = DEF_HIGH, currSpeed = OFF):
         self.idle= idle
         self.lowLimit = lowLimit
         self.highLimit = highLimit
@@ -30,10 +32,10 @@ class ballShooter:
     
     ##Public Methods
     def setSpeed(self, newSpeed):
-        if(newSpeed > 100):
-            newSpeed = 100
-        if(newSpeed < 0):
-            newSpeed = 0
+        if(newSpeed > HIGHLIMIT):
+            newSpeed = HIGHLIMIT
+        if(newSpeed < LOWLIMIT):
+            newSpeed = LOWLIMIT
         
         #Set duty cycle at desired speed
         self.pwm.ChangeDutyCycle(newSpeed)
@@ -43,6 +45,15 @@ class ballShooter:
         return True
     
     def setLimits(self, newLowLimit, newHighLimit):
+        #Check that limits are within acceptable range
+        if(newHighLimit > HIGHLIMIT):
+            newHIghLimit = HIGHLIMIT
+        if(newLowLimit < LOWLIMIT):
+            newLowLimit = LOWLIMIT
+        
+        #Check that limits are compatible
+        if newLowLimit >newHighLimit:
+            return False         #The limits remain unchanged
         
         self.lowLimit = newLowLimit
         self.highLimit = newHighLimit  
@@ -67,7 +78,7 @@ class ballShooter:
         if (self.idle == True) :
             return False        
         #Start the motor at lowest speed
-        self.pwm.start(LOWLIMIT)
+        self.pwm.start(DEF_LOW)
         
         self.idle = True
         return True
