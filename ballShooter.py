@@ -30,6 +30,11 @@ class ballShooter:
     
     ##Public Methods
     def setSpeed(self, newSpeed):
+        if(newSpeed > 100):
+            newSpeed = 100
+        if(newSpeed < 0):
+            newSpeed = 0
+        
         #Set duty cycle at desired speed
         self.pwm.ChangeDutyCycle(newSpeed)
         #Calculate calibrated new speed
