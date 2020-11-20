@@ -8,45 +8,44 @@ import threading
 import requests
 import json
 
-#Status
-RUNNING = 'running'
-SHOOTER = 'ballShooter'
-PROX = 'proximitySensor'
-SERVO = 'servoMotor'
 
-#Keys
-keyJulianB1r = "59EV92UFH25MFELC"
-keyJulianB1w = "KWCJB4XPZW92YT2R"  
-keyJulianB2r = "OGZPXUJ66L9TX6M7"
-keyJulianB2w = "U8Y5A1WG8Y5NL3WP"
 
+##Keys
+#keyJulianB1r = "59EV92UFH25MFELC"            #MessageChannel
+#keyJulianB1w = "KWCJB4XPZW92YT2R"  
+#keyJulianB2r = "OGZPXUJ66L9TX6M7"
+#keyJulianB2w = "U8Y5A1WG8Y5NL3WP"
+#keyDelightD1w = "R9H809YX4MUSNPG1"        #Status Channel
+
+messageChannel = "59EV92UFH25MFELC"
+statusChannel = "R9H809YX4MUSNPG1"                
 
 class ballShooterServer:
     
     """Constructor for the class"""
-    def __init__(self, ballsLeft = None, status = None):
+    def __init__(self, ballsLeft = None, statusMessage = None):
         self.ballsLeft = ballsLeft
-        self.status = status
+        self.statusMessage = statusMessage
         
     ##Public Methods
-    def status():
-        return ''
+    def status(self):
+        return 0         #Assuming no errors
     
-    def shootBall():
+    def shootBall(self):
         return False
     
-    def startGame():
+    def startGame(self):
         return False
     
-    def finishGame():
+    def finishGame(self):
         return False
     
-    ##Private Methods
-    def __sendStatus():
+    
+    def sendStatus(self):
         
-        status = status()
+        statusMessage = self.status()
         
-        params = urllib.urlencode({'field1': status, 'key':keyJulianB1r }) 
+        params = urllib.urlencode({'field1': statusMessage, 'key':statusChannel}) 
         headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
         conn = httplib.HTTPConnection("api.thingspeak.com:80")
         try:
@@ -57,29 +56,63 @@ class ballShooterServer:
             conn.close()
         except:
             print ("connection failed")
-        break
     
-    def __getMessageShootBall():
-        URL='https://api.thingspeak.com/channels/1159985/fields/1.json?api_key='
-        KEY= keyJulianB1r
+    def decodeMessage(self):
+        curr_id = -1
+        try:
+            while True:
+                mess_id, message =self.__getMessage()
+                action = message['feeds']
+                received = str(action[0]['field1'])
+                if curr_id < mess_id:
+                    curr_id = mess_id
+                    print('New Message Received')
+                    print('The message is: ' + received)
+                    print('field2 = ' +str(action[0]['field2']))
+                    print('field3 = ' +str(action[0]['field3']))
+                    print('field4 = ' +str(action[0]['field4']))
+                    #if message == 'shootBall':
+                        #currSpeed = action[0]['field2']
+                        #print('The ball is getting ready to be shot at: ', currSpeed, ' %')
+                    #if message == 'startGame':
+                        #print('The ballShooter is initializing...')        
+                    #if message == 'finishGame':
+                        #print('The ballShooter is getting deactivated')                    
+    
+                time.sleep(5)            
+    
+        except KeyboardInterrupt:
+                print('Done status')        
+        
+    ##Private Methods
+    def __getMessage(self):
+        URL='https://api.thingspeak.com/channels/1159985/feeds.json?api_key='
+        KEY= messageChannel
         HEADER='&results='
-        NUMSIGNALS = '4' 
+        NUMSIGNALS = '1' 
         NEW_URL=URL+KEY+HEADER+NUMSIGNALS    
         
         get_data=requests.get(NEW_URL).json()
+        #print('The type of the JSON data is; ', type(get_data))
+        last_entry_id = get_data['channel']['last_entry_id']
         channel_id=get_data['channel']['id']
         
         field_1=get_data['feeds']
+        
+        t=[]
+        for x in field_1:
+            t.append(x['field1']) 
+        
+        return last_entry_id, get_data  
+    
+
       
-    
-    def __getMessageGame():
-        URL='https://api.thingspeak.com/channels/1159985/fields/1.json?api_key='
-        KEY= keyJulianB1r
-        HEADER='&results='
-        NUMSIGNALS = '4' 
-        NEW_URL=URL+KEY+HEADER+NUMSIGNALS    
+#if __name__ == "__main__":
         
-        get_data=requests.get(NEW_URL).json()
-        channel_id=get_data['channel']['id']
-        
-        field_1=get_data['feeds']
+        #try:
+            #shooterServer = ballShooterServer()
+            #shooterServer.decodeMessage()
+            #shooterServer.sendStatus()
+            
+        #except KeyboardInterrupt:
+            #print('Done')
