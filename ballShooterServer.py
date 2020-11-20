@@ -10,6 +10,7 @@ import json
 
 import ballShooter as bl
 
+MAX_BALLS = 6
 DEF_BALLS = 3
 NOERROR = 0
 
@@ -38,11 +39,12 @@ class ballShooterServer:
         
     ##Public Methods
     def status(self):
-        statusMessage = self.shooter.status()
-        return statusMessage         #Assuming no errors
+        shooterMessage = self.shooter.status()
+        
+        return self.statusMessage         #Assuming no errors
     
     def shootBall(self, newSpeed):
-        if (ballsLeft == 0):
+        if (self.ballsLeft == 0):
             return False
         
         #check proximity sensor if somebody, then change status and stop action
@@ -53,6 +55,12 @@ class ballShooterServer:
         return True
     
     def startGame(self, lowLimit, highLimit, numBalls):
+        
+        if(numBalls < 0):
+            return False
+        
+        if (numBalls >MAX_BALLS):
+            numBalls = MAX_BALLS
         
         self.ballsLeft = numBalls
         
