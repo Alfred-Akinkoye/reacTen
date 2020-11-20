@@ -1,4 +1,4 @@
-"""Unittest code"""
+"""Ball Shooter Software Test Suite"""
 import unittest
 import ballShooter as bl
 
