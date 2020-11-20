@@ -41,12 +41,12 @@ public SampGUI() {
 		// the clickable button
          start = new JButton("START");
          end = new JButton("QUIT");
-         reset = new JButton("RESET");
+         //reset = new JButton("RESET");
          single = new JButton("Single Player");
          multi = new JButton("Multi Player");
         start.addActionListener(this);
         end.addActionListener(this);
-         reset.addActionListener(this);
+         //reset.addActionListener(this);
          single.addActionListener(this);
          multi.addActionListener(this);
          Welcome = new JLabel("WELCOME TO REACTEN!WHAT MODE OF GAME WOULD YOU LIKE TO PLAY?PLEASE CLICK START FIRST");
@@ -59,7 +59,7 @@ public SampGUI() {
         panel.setLayout(new GridLayout(0, 10));
         panel.add(start);
         panel.add(end);
-        panel.add(reset);
+        //panel.add(reset);
         messagepanel.setLayout(new FlowLayout());
         messagepanel.add(Welcome);
 
@@ -131,7 +131,7 @@ public void actionPerformed(ActionEvent e) {
                 multi.setEnabled(false);
                 //start.setEnabled(true);
                 single.setEnabled(false);
-                System.out.println("Game has officially begun in 3..2..1");
+                System.out.println("Game has officially begun in single player mode in 3..2..1..START!");
                 start.setEnabled(false);
             }
             else if (cmd.equals("Multi Player")){
@@ -139,13 +139,13 @@ public void actionPerformed(ActionEvent e) {
                 single.setEnabled(false);
                 //start.setEnabled(true);
                 multi.setEnabled(false);
-                System.out.println("Game has officially begun in 3..2..1");
+                System.out.println("Game has officially begun in multiplayer mode in 3..2..1...START!");
                 start.setEnabled(false);
             }
              if(cmd.equals("START"))
             {
             	end.setEnabled(false);
-               reset.setEnabled(false);
+               //reset.setEnabled(false);
                 StartGame();
                 //throw new IllegalArgumentException("Game has already started");
             }
@@ -153,7 +153,7 @@ public void actionPerformed(ActionEvent e) {
             else if (cmd.equals("QUIT")){
             	start.setEnabled(false);
                end.setEnabled(false);
-               reset.setEnabled(false);
+               //reset.setEnabled(false);
                multi.setEnabled(false);
                single.setEnabled(false);
                     QuitGame();
@@ -163,11 +163,11 @@ public void actionPerformed(ActionEvent e) {
             else if (cmd.equals("RESET")){
             	
                end.setEnabled(false); 
-               reset.setEnabled(false);
+               //reset.setEnabled(false);
                multi.setEnabled(false);
                single.setEnabled(false);
                     resetGame();
-                
+
 
                 }
         }
