@@ -17,3 +17,22 @@ def insertMatchTable(conn, shotno,targetForce,shooterspeed,hitormiss,user,id):
     cursor = conn.cursor();
     cursor.execute(temp,(shotno,targetForce,shooterspeed,hitormiss,user));
     conn.commit();
+
+def pullFromUser(conn):
+    cursor = conn.cursor();
+    cursor.execute("SELECT * FROM USERS")
+    myresult = cursor.fetchall()
+    print (myresult)
+
+def pullFromMatch(conn,num):
+    cursor = conn.cursor();
+    text = "SELECT * FROM Match_"+str(num)
+    cursor.execute(text)
+    myresult = cursor.fetchall()
+    print (myresult)
+
+def pullFromHistory(conn):
+    cursor = conn.cursor();
+    cursor.execute("SELECT * FROM HISTORY")
+    myresult = cursor.fetchall()
+    print (myresult)

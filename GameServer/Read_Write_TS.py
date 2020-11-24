@@ -85,7 +85,7 @@ def readShooterStatus():
     get_data = requests.get(url).json()
     subject = get_data["feeds"]
     current = subject[0]
-    print(current["field1"])
+    return current["field1"]
 
 #read Target Status
 def readTargetStatus():
@@ -94,7 +94,7 @@ def readTargetStatus():
     get_data = requests.get(url).json()
     subject = get_data["feeds"]
     current = subject[0]
-    print(current["field1"])
+    return current["field1"]
 
 # Read Target Status
 def readTargetInfo():
@@ -103,8 +103,8 @@ def readTargetInfo():
     get_data = requests.get(url).json()
     subject = get_data["feeds"]
     current = subject[0]
-    print(current["field1"])
-    print(current["field2"])
+    results = [current["field1"], current["field2"]]
+    return results
 
 #Staus Simulation
 def readSimuStatus():
