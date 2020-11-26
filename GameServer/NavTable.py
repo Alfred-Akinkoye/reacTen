@@ -22,7 +22,7 @@ def pullFromUser(conn):
     cursor = conn.cursor();
     cursor.execute("SELECT * FROM USERS")
     myresult = cursor.fetchall()
-    print (myresult)
+    return myresult
 
 def pullFromMatch(conn,num):
     cursor = conn.cursor();

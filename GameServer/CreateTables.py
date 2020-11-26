@@ -1,7 +1,6 @@
 #DATABASE LOGIC
 import sqlite3
 from sqlite3 import Error
-
 ###CREATING ITEMS###
 #creating the connection to the sql Database
 def create_connection(db_file):

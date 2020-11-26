@@ -5,7 +5,10 @@ from PIL import ImageTk, Image
 
 HEIGHT = 500
 WIDTH = 600
-
+global user_name
+user_name = ""
+global pass_word
+pass_word = ""
 
 # def clear():
 #   global username
@@ -29,7 +32,11 @@ WIDTH = 600
 
 root = tk.Tk()
 
-
+def testpass(username,password):
+    global user_name
+    user_name = username
+    global pass_word
+    pass_word = password
 
 def Login():
 #makes a container that holds the button( used for initial screen size)
@@ -38,7 +45,7 @@ def Login():
   canvas = tk.Canvas(root,height = HEIGHT, width = WIDTH )
   canvas.pack()
 
-  background_image = ImageTk.PhotoImage(file =('image_400.jpg'))
+  background_image = ImageTk.PhotoImage(file =('image_thumb.jpg'))
   background_label = tk.Label(root, image= background_image)
   background_label.place( relwidth = 1, relheight = 1)
 
@@ -86,7 +93,9 @@ def Login():
   messframe.place(relx = 0.5, rely = 0.5,relwidth = 0.15, relheight = 0.1,anchor = 'n')
 
 #done BUTTON
-  button3 = tk.Button(messframe,text = " Login",font = 40,  fg =  'black')
+  button3 = tk.Button(messframe,text = " Login",font = 40,  fg =  'black',command =lambda :testpass(entry1.get(),entry2.get()))
+  print(user_name)
+  print("Get's here")
   button3.place(relx = 0.5,rely = 0.5, relwidth = 1, relheight = 1, anchor = 'center')
 
 

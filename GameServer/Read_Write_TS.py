@@ -64,7 +64,7 @@ def shootBall(speed):
         break
 
 #Writing shootball to simulator
-def shootBall(speed):
+def shootBallSim(speed):
     while True:
         params = urllib.parse.urlencode({'field1': "shootBall", 'field2': speed, 'key':C1 })
         headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
@@ -114,3 +114,13 @@ def readSimuStatus():
     subject = get_data["feeds"]
     current = subject[0]
     print(current["field1"])
+
+# Read Target Status Simulation
+def readTargetInfoSim():
+    url = 'https://api.thingspeak.com/channels/1226455/feeds.json?api_key=ZXWNO235JBIYOK0T&results=1'
+    #print (url)
+    get_data = requests.get(url).json()
+    subject = get_data["feeds"]
+    current = subject[0]
+    results = [current["field1"], current["field2"]]
+    return results
