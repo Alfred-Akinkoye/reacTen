@@ -9,6 +9,9 @@ class servoMotor:
     
     def __init__(self):
         pass   
+    
+    def status(self):
+        return True    
         
     def ejectBall():
         GPIO.setmode(GPIO.BOARD)
