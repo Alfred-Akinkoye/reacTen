@@ -1,3 +1,6 @@
+"""Ball Shooter that controls the DC motor that shoots the ball"""
+
+
 ##PWM Modules
 import RPi.GPIO as GPIO
 from time import sleep
@@ -6,11 +9,16 @@ from time import sleep
 PWMPIN = 12
 PWMPERIOD = 1000
 
+#In % units
 OFF = 0
 LOWLIMIT = 0
 HIGHLIMIT = 100
-DEF_LOW = 40
-DEF_HIGH = 100
+DEF_LOW = 10
+DEF_HIGH = 80
+
+#In duty cycle units
+CALILOW = 30         
+CALIHIGH = 100     
 
 
 class ballShooter:
@@ -37,9 +45,10 @@ class ballShooter:
         if(newSpeed < LOWLIMIT):
             newSpeed = LOWLIMIT
         
+        actualOutput = interp(newSpeed, [self.lowLimit, self.highLimit],[CALILOW, CALIHIGH])
+        
         #Set duty cycle at desired speed
         self.pwm.ChangeDutyCycle(newSpeed)
-        #Calculate calibrated new speed
         self.currSpeed = newSpeed
         
         return True
@@ -47,7 +56,7 @@ class ballShooter:
     def setLimits(self, newLowLimit, newHighLimit):
         #Check that limits are within acceptable range
         if(newHighLimit > HIGHLIMIT):
-            newHIghLimit = HIGHLIMIT
+            newHighLimit = HIGHLIMIT
         if(newLowLimit < LOWLIMIT):
             newLowLimit = LOWLIMIT
         
@@ -67,6 +76,7 @@ class ballShooter:
         if (self.idle == False):
             return False        
         #Stop the motor to off
+        self.pwm.ChangeDutyCycle(OFF)
         self.pwm.stop()
         GPIO.cleanup()        
 
