@@ -42,7 +42,19 @@ class ballShooterServer:
         
     ##Public Methods
     def status(self):
-        shooterMessage = self.shooter.status()
+        errorValue = NOERROR
+        
+        shooterStatus = self.shooter.status()
+        if(not(shooterStatus)):
+            errorValue += 100
+            
+        servoStatus = self.servo.status()
+        if(not(servoStatus)):
+            errorValue += 10       
+            
+        #Check Proximity Sensor status
+        
+        self.statusMessage += errorValue
         
         return self.statusMessage         #Assuming no errors
     
