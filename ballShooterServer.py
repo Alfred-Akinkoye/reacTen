@@ -9,10 +9,13 @@ import requests
 import json
 
 import ballShooter as bl
+import servoMotor as servo
 
 MAX_BALLS = 6
 DEF_BALLS = 3
 NOERROR = 0
+
+PAUSE = 2    #Seconds
 
 
 ##Keys
@@ -34,7 +37,7 @@ class ballShooterServer:
         
         self.shooter = bl.ballShooter()
         #initialize Proximity Sensor
-        #initialize ServoMotor
+        self.servo = servo.servoMotor() 
         
         
     ##Public Methods
@@ -49,7 +52,8 @@ class ballShooterServer:
         
         #check proximity sensor if somebody, then change status and stop action
         self.shooter.setSpeed(newSpeed)
-        #release a ball
+        self.servo.ejectBall()
+        time.sleep(PAUSE)
         self.ballsLeft -= 1
         
         return True
