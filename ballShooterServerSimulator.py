@@ -4,7 +4,8 @@ import httplib
 import urllib
 import time
 
-import threading
+#import threading
+import thread
 import requests
 import json
 
@@ -22,6 +23,7 @@ PAUSE = 2    #Seconds
 #keyC2w = "R9H809YX4MUSNPG1"        #Status Channel
 
 messageChannel = "KSW0O5SZVNZP6LC9"
+messageURL = "https://api.thingspeak.com/channels/1160829/feeds.json?api_key="
 statusChannel = "R9H809YX4MUSNPG1"                
 
 class ballShooterServer:
@@ -34,7 +36,7 @@ class ballShooterServer:
         
     ##Public Methods
     def status(self):
-        self.statusMessage =  __statusSimulation()
+        self.statusMessage =  self.statusSimulation()
         
         return self.statusMessage         #Assuming no errors
     
@@ -46,6 +48,7 @@ class ballShooterServer:
         time.sleep(PAUSE)
         self.ballsLeft -= 1
         
+        print("The ball was shot at a speed of :", newSpeed, "%")
         return True
     
     def startGame(self, lowLimit, highLimit, numBalls):
@@ -57,15 +60,24 @@ class ballShooterServer:
             numBalls = MAX_BALLS
         
         self.ballsLeft = numBalls
+        
+        print("The system has started")
+        print("The low limit is: " + str(lowLimit) + ". The high limit is: " + str(highLimit))
+        print(str(numBalls)+" balls were loaded")
+        
         return True
     
     def finishGame(self):
+        print("The system has finished the game")
+        
         return True
     
     
     def sendStatus(self):
         
         statusMessage = self.status()
+        
+        print("The status sent is: " + str(statusMessage))
         
         params = urllib.urlencode({'field1': statusMessage, 'key':statusChannel}) 
         headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
@@ -79,43 +91,17 @@ class ballShooterServer:
         except:
             print ("connection failed")
     
-    def decodeMessage(self):
-        curr_id = -1
-        try:
-            while True:
-                mess_id, message =self.__getMessage()
-                action = message['feeds']
-                received = str(action[0]['field1'])
-                if curr_id < mess_id:
-                    curr_id = mess_id
-                    print('New Message Received')
-                    print('The message is: ' + received)
-                    print('field2 = ' +str(action[0]['field2']))
-                    print('field3 = ' +str(action[0]['field3']))
-                    print('field4 = ' +str(action[0]['field4']))
-                    #if message == 'shootBall':
-                        #currSpeed = action[0]['field2']
-                        #print('The ball is getting ready to be shot at: ', currSpeed, ' %')
-                    #if message == 'startGame':
-                        #print('The ballShooter is initializing...')        
-                    #if message == 'finishGame':
-                        #print('The ballShooter is getting deactivated')                    
     
-                time.sleep(5)            
-    
-        except KeyboardInterrupt:
-                print('Done status')        
         
     ##Private Methods
     def __getMessage(self):
-        URL='https://api.thingspeak.com/channels/1159985/feeds.json?api_key='
+        URL= messageURL
         KEY= messageChannel
         HEADER='&results='
         NUMSIGNALS = '1' 
         NEW_URL=URL+KEY+HEADER+NUMSIGNALS    
         
         get_data=requests.get(NEW_URL).json()
-        #print('The type of the JSON data is; ', type(get_data))
         last_entry_id = get_data['channel']['last_entry_id']
         channel_id=get_data['channel']['id']
         
@@ -127,7 +113,7 @@ class ballShooterServer:
         
         return last_entry_id, get_data  
     
-    def __statusSimulation():
+    def statusSimulation(self):
         errorMessa = 0
         
         shooter = [0, 100]
@@ -140,18 +126,64 @@ class ballShooterServer:
         
         proxsensor = [0, 1, 2]
         prob = [0.93, 0.02, 0.05]    
-        errorMessa += int(rn.choice(servo, 1, p = prob))              
+        errorMessa += int(rn.choice(proxsensor, 1, p = prob))              
         
         return errorMessa
     
-
+    def updateStatus(self,threadName, delay):
+        try:
+            while (1):
+                self.sendStatus()
+                time.sleep(delay)
+        except KeyboardInterrupt:
+            print("status updating ended")
+    
+    
+    def decodeMessage(self,threadName, delay):
+        curr_id , message =self.__getMessage()
+        try:
+            while True:
+                mess_id, message =self.__getMessage()
+                action = message['feeds']
+                received = str(action[0]['field1'])
+                if curr_id < mess_id:
+                    curr_id = mess_id
+                    print('New Message Received')
+                    print('The message is: ' + received)
+                    if received == 'shootBall':
+                        currSpeed = int(action[0]['field2'])
+                        if (self.shootBall(currSpeed)):
+                            print('The ball is getting ready to be shot at: ', currSpeed, ' %')
+                        else:
+                            print('The shot failed')
+                    if received == 'startGame':
+                        lowLimit = int(action[0]['field2'])
+                        highLimit = int(action[0]['field3'])
+                        numBalls = int(action[0]['field4'])
+                        if (self.startGame(lowLimit, highLimit, numBalls)):
+                            print('The ballShooter is initializing...')   
+                        else:
+                            print("the inititialization failed")
+                    if received == 'finishGame':
+                        if (self.finishGame()):
+                            print('The ballShooter is getting deactivated')  
+                        else:
+                            print('The deactivation of the ballShooter failed')
+    
+                time.sleep(delay)            
+    
+        except KeyboardInterrupt:
+            print('Done status')        
       
-#if __name__ == "__main__":
+if __name__ == "__main__":
         
-        #try:
-            #shooterServer = ballShooterServer()
-            #shooterServer.decodeMessage()
-            #shooterServer.sendStatus()
+        try:
+            shooter = ballShooterServer()
+            thread.start_new_thread(shooter.updateStatus, ("Thread-1", 3, ) )
+            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", 6, ) )
             
-        #except KeyboardInterrupt:
-            #print('Done')
+        except KeyboardInterrupt:
+            print('Done')
+            
+        while 1:
+            pass        
