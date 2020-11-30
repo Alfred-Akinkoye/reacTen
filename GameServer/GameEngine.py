@@ -63,6 +63,7 @@ def Game():
         create_match_table(dbconn,match_id)
         writeStart_EndP1("startGame",min_speed,max_speed,balls)
         writeStart_EndP2("startGame",min_speed,max_speed,balls)
+        time.sleep(1)
         while((int(readShooterStatus()) == 0) and (int(readTargetStatus()) == 0) and (balls>0) and (int(readSimuStatus())==0) and (int(readTargetInfoSim())==0)):
             #player 1's turn
             shootBall(current_speed)
