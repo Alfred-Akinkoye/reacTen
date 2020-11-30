@@ -31,8 +31,8 @@ class servoMotor:
         GPIO.cleanup()        
         
 if __name__ == '__main__':
-    servo = self.servoMotor()
-    servo.ejectBall
+    servo = servoMotor()
+    servo.ejectBall()
         
 
             
