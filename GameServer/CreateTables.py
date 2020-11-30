@@ -1,6 +1,8 @@
 #DATABASE LOGIC
 import sqlite3
 from sqlite3 import Error
+global user_name
+user_name = "Things"
 ###CREATING ITEMS###
 #creating the connection to the sql Database
 def create_connection(db_file):

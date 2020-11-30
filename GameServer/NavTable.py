@@ -35,4 +35,4 @@ def pullFromHistory(conn):
     cursor = conn.cursor();
     cursor.execute("SELECT * FROM HISTORY")
     myresult = cursor.fetchall()
-    print (myresult)
+    return myresult

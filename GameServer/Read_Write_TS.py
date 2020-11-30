@@ -113,7 +113,7 @@ def readSimuStatus():
     get_data = requests.get(url).json()
     subject = get_data["feeds"]
     current = subject[0]
-    print(current["field1"])
+    return current["field1"]
 
 # Read Target Status Simulation
 def readTargetInfoSim():
