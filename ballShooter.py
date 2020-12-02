@@ -4,7 +4,7 @@
 ##PWM Modules
 import RPi.GPIO as GPIO
 from time import sleep
-
+from numpy import interp
 
 PWMPIN = 32
 PWMPERIOD = 1000
@@ -50,6 +50,7 @@ class ballShooter:
         #Set duty cycle at desired speed
         self.pwm.ChangeDutyCycle(newSpeed)
         self.currSpeed = newSpeed
+        sleep(3)
         
         return True
     
