@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 from time import sleep
 
 
-PWMPIN = 12
+PWMPIN = 32
 PWMPERIOD = 1000
 
 #In % units
@@ -17,7 +17,7 @@ DEF_LOW = 10
 DEF_HIGH = 80
 
 #In duty cycle units
-CALILOW = 30         
+CALILOW = 70         
 CALIHIGH = 100     
 
 
