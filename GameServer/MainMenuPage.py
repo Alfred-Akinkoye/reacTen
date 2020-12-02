@@ -2,29 +2,17 @@ from tkinter import *
 import tkinter as tk
 import tkinter.messagebox
 from PIL import ImageTk, Image
-#from GameEngine import *
 
-#dbconn = create_connection(r"C:\sqlite\db\pythonsqlite.db")
 HEIGHT = 500
 WIDTH = 600
-#history = pullFromHistory(dbconn)
 root = tk.Tk()
-
-def showHistory(self,root):
-    for i in range(len(history)):
-        for j in range(len(history[0])):
-            self.e = Entry(root, width=20, fg='blue',
-                           font=('Arial',16,'bold'))
-            self.e.grid(row=i, column=j)
-            self.e.insert(END, lst[i][j])
-
 
 def restart():
     ans = tkinter.messagebox.askyesno('Starting New Game','Are you sure?')
     if ans:
         root.destroy()
-        from GameMode import GameMode
-        GameMode()
+        from BallShooterLimit import Limit
+        Limit()
 def history():
     hist = tkinter.messagebox.askyesno('View History','Are you sure you would like to view history?')
     if hist:

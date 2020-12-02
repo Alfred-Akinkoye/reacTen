@@ -115,6 +115,13 @@ def readSimuStatus():
     current = subject[0]
     return current["field1"]
 
+def readTargetSimStatus():
+    url = 'https://api.thingspeak.com/channels/1246193/feeds.json?api_key=U43A2JY4QNNC635E&results=1'
+    get_data = requests.get(url).json()
+    subject = get_data["feeds"]
+    current = subject[0]
+    return current["field1"]
+
 # Read Target Status Simulation
 def readTargetInfoSim():
     url = 'https://api.thingspeak.com/channels/1226455/feeds.json?api_key=ZXWNO235JBIYOK0T&results=1'
