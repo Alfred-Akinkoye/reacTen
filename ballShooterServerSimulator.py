@@ -20,11 +20,11 @@ PAUSE = 2    #Seconds
 
 ##Keys
 #keyC1r = "KSW0O5SZVNZP6LC9"            #MessageChannel
-#keyC2w = "R9H809YX4MUSNPG1"        #Status Channel
+#keyC2w = "3I8BF8VYE42TX9KC"        #Status Channel
 
 messageChannel = "KSW0O5SZVNZP6LC9"
 messageURL = "https://api.thingspeak.com/channels/1160829/feeds.json?api_key="
-statusChannel = "R9H809YX4MUSNPG1"                
+statusChannel = "3I8BF8VYE42TX9KC"                
 
 class ballShooterServer:
     
@@ -117,15 +117,15 @@ class ballShooterServer:
         errorMessa = 0
         
         shooter = [0, 100]
-        prob = [0.98, 0.02]    
+        prob = [1, 0]    
         errorMessa += int(rn.choice(shooter, 1, p = prob))
         
         servo = [0, 10]
-        prob = [0.98, 0.02]    
+        prob = [1, 0]    
         errorMessa += int(rn.choice(servo, 1, p = prob))      
         
         proxsensor = [0, 1, 2]
-        prob = [0.93, 0.02, 0.05]    
+        prob = [1, 0, 0]    
         errorMessa += int(rn.choice(proxsensor, 1, p = prob))              
         
         return errorMessa
@@ -179,8 +179,8 @@ if __name__ == "__main__":
         
         try:
             shooter = ballShooterServer()
-            thread.start_new_thread(shooter.updateStatus, ("Thread-1", 3, ) )
-            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", 6, ) )
+            thread.start_new_thread(shooter.updateStatus, ("Thread-1", 12, ) )
+            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", 2, ) )
             
         except KeyboardInterrupt:
             print('Done')
