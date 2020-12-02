@@ -4,7 +4,7 @@ import httplib
 import urllib
 import time
 
-import threading
+import thread
 import requests
 import json
 
