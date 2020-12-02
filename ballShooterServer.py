@@ -162,12 +162,15 @@ class ballShooterServer:
         except KeyboardInterrupt:
             print('Done status')        
       
-#if __name__ == "__main__":
+if __name__ == "__main__":
         
-        #try:
-            #shooterServer = ballShooterServer()
-            #shooterServer.decodeMessage()
-            #shooterServer.sendStatus()
+        try:
+            shooter = ballShooterServer()
+            thread.start_new_thread(shooter.updateStatus, ("Thread-1", 12, ) )
+            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", 2, ) )
             
-        #except KeyboardInterrupt:
-            #print('Done')
+        except KeyboardInterrupt:
+            print('Done')
+            
+        while 1:
+            pass        
