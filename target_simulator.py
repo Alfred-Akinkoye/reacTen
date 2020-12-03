@@ -90,7 +90,7 @@ def updateStatus(threadName,delay):
         print("status updating ended")
         
 def target_action(threadName,delay):
-    curr_id , message =get_message()
+    curr_id , message=get_message()
     try:
         while True:
             mess_id, message =get_message()

@@ -12,12 +12,11 @@ channelD1write = "R9H809YX4MUSNPG1"
 channelD1read = "OX910MD5LNMRZO17"
 channelD2write = "ZDILVXVB0LFJA9AK"
 channelD2read = "ZXWNO235JBIYOK0T"
-hitwrite ="U8Y5A1WG8Y5NL3WP"
-statuswrite = "3I8BF8VYE42TX9KC"
+statuswrite = "Y5CBDQ1TLE8WPFBZ"
 
 def send_status():
     status = 0
-    params = urllib.parse.urlencode({'field2': status, 'key':statuswrite })
+    params = urllib.parse.urlencode({'field1': status, 'key':statuswrite })
     headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
     conn = http.client.HTTPConnection("api.thingspeak.com:80")
     try:
@@ -33,7 +32,7 @@ def send_status():
 def send_hit():
     hit = 1
     ballForce = random.randint(0,50)
-    params = urllib.parse.urlencode({'field': ballForce, 'field2': hit, 'key':channelD2write })
+    params = urllib.parse.urlencode({'field1': ballForce, 'field2': hit, 'key':channelD2write })
     headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
     conn = http.client.HTTPConnection("api.thingspeak.com:80")
     try:
@@ -49,7 +48,8 @@ def send_hit():
         
 def send_miss():
     hit = 0
-    params = urllib.parse.urlencode({'field2': hit, 'key':channelD2write })
+    ballForce = 0
+    params = urllib.parse.urlencode({'field1': ballForce,'field2': hit, 'key':channelD2write })
     headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
     conn = http.client.HTTPConnection("api.thingspeak.com:80")
     try:
@@ -86,7 +86,6 @@ def hit_or_miss():
         return False
     else:
         send_hit()
-        #simulated_force()
         return True
 def updateStatus(threadName,delay):
     try:
