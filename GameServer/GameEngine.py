@@ -20,8 +20,25 @@ users = ["temp","Simulation"]
 turn = 0
 
 def Test():
-    feedback_p2 = readTargetInfoSim()
-    print(feedback_p2)
+    temp = pullFromMatch(dbconn,match_id)
+    temp2 = 0
+    i = 0
+    while i<(balls*2):
+        if(temp[i][3]==1):
+            temp2+=1
+        i+=2
+    i = 1
+    temp3 = 0
+    while i<(balls*2):
+        if(temp[i][3]==1):
+            temp3+=1
+        i+=2
+    margin = ""
+    if(temp2>temp3):
+        margin = "won"
+    else:
+        margin = "lost"
+    insertHistoryTable(dbconn,"Alf",match_id,margin,"Single Player",temp2)
     
 def ValidateLogin():
     userinfo = pullFromUser(dbconn)
@@ -80,6 +97,7 @@ def Game():
             current_speed = feedback_p2[0]
             time.sleep(2)
             balls-=1
+            turn+=1
         match_id += 1
     '''For single player'''
     if (0==getMode()) :
@@ -105,9 +123,31 @@ def Game():
             current_speed = feedback_p2[0]
             time.sleep(2)
             balls-=1
-        match_id += 1
+            print("Ball1 Done")
+            turn+=1
         writeStart_EndP1("finishGame",0,0,0)
         writeStart_EndP2("finishGame",0,0,0)
+        
+        temp = pullFromMatch(dbconn,match_id)
+        temp2 = 0
+        i = 0
+        while i<(balls*2):
+            if(temp[i][3]==1):
+                temp2+=1
+            i+=2
+        i = 1
+        temp3 = 0
+        while i<(balls*2):
+            if(temp[i][3]==1):
+                temp3+=1
+            i+=2
+        margin = ""
+        if(temp2>temp3):
+            margin = "won"
+        else:
+            margin = "lost"
+        insertHistoryTable(dbconn,user[0],match_id,margin,"Single Player",temp2)
+        match_id += 1
 
     '''Call closing page'''
     '''if statement for play again, look at stats, or main menu'''

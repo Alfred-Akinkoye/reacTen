@@ -29,7 +29,7 @@ def pullFromMatch(conn,num):
     text = "SELECT * FROM Match_"+str(num)
     cursor.execute(text)
     myresult = cursor.fetchall()
-    print (myresult)
+    return (myresult)
 
 def pullFromHistory(conn):
     cursor = conn.cursor();
