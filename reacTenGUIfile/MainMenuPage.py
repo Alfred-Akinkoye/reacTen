@@ -1,13 +1,31 @@
 from tkinter import *
 import tkinter as tk
+from tkinter import ttk
 import tkinter.messagebox
+import sqlite3
 from PIL import ImageTk, Image
 
 HEIGHT = 500
 WIDTH = 600
 
-root = tk.Tk()
+global root
 
+root = tk.Tk()
+# Connect to SQLite database
+dbconnect = sqlite3.connect("testhist.db" )
+dbconnect.row_factory = sqlite3.Row;
+
+# Create a cursor and initialize it
+cursor = dbconnect.cursor();
+
+# Create database
+try:
+    cursor.execute("""CREATE TABLE history (user text, password text)""")
+except Exception as E:
+    print('Error: ', E)
+else:
+    print('table created')
+    
 def restart():
     ans = tkinter.messagebox.askyesno('Restarting New Game','Are you sure?')
     if ans:
@@ -15,18 +33,47 @@ def restart():
         from GameMode import GameMode
         GameMode()
 def history():
+    global hasenteredtable
+    hasenteredtable = True
+    
     hist = tkinter.messagebox.askyesno('View History','Are you sure you would like to view history?')
     if hist:
+
+        from gameengine import dbconn
+        from gameengine import match_id,users
+
+        temp = tk.Tk()
+        temp.title('GAME DATA')
+        cursor = dbconn.cursor();
+        text = "SELECT * FROM USERS"+str(users)
+        cursor.execute(text)
+        myresult = cursor.fetchall()
+        prequel = [("Username","Password")]
+        final = prequel+myresult
+        myresult = final
+        total_rows=len(myresult)
+        total_columns = len(myresult[0])
+        for i in range(total_rows):
+            for j in range(total_columns):
+                e = Entry(temp, width=20,fg='blue',font=('Arial',16,'bold'))
+                e.grid(row=i,column = j)
+                e.insert(END,myresult[i][j])
+                
         root.destroy()
 def exiting():
     exiting = tkinter.messagebox.askyesno('Exit','Are you sure you would like to exit?')
     if exiting:
         root.destroy()
-    
+   
 def MainMenu():
   root.title("Main Menu Page GUI")
   canvas = tk.Canvas(root,height = HEIGHT, width = WIDTH)
   canvas.pack()
+  
+  #displays the background image in the GUI
+  background_image = ImageTk.PhotoImage(file =('image_400.jpg'))
+  background_label = tk.Label(root, image= background_image)
+  background_label.place( relwidth = 1, relheight = 1)
   
   #this label shows a header in the main menu
   headerLabel = tk.Label(root, text = "Choose any of the options below: ")
@@ -45,6 +92,7 @@ def MainMenu():
   restartbutton.place(relx = 0.5,rely = 0.5, relwidth = 0.9, relheight = 1, anchor = 'center')
   
   
+  
   #this frame is for the "ViewHistory" button
   histframe = tk.Frame(root,bg = '#ff99cc',bd = 5)
   histframe.place(relx = 0.5, rely = 0.35,relwidth = 0.3, relheight = 0.1,anchor = 'n')
@@ -54,7 +102,7 @@ def MainMenu():
   histlabel.place(relx = 0.1, rely =0, relwidth = 0.8, relheight = 1)
   
   #this is the "ViewHistory" button
-  histbutton = tk.Button(histframe,text = "View History",font = 40,  fg =  'black')
+  histbutton = tk.Button(histframe,text = "View History",font = 40,  fg =  'black', command = lambda: history())
   histbutton.place(relx = 0.5,rely = 0.5, relwidth = 0.9, relheight = 1, anchor = 'center')
   
   #this frame is for the "ExitGame" button
@@ -68,6 +116,8 @@ def MainMenu():
   #this is the "StartnewGame" button
   exitbutton = tk.Button(exitframe,text = "Exit Game",font = 40,  fg =  'black', command = lambda: exiting())
   exitbutton.place(relx = 0.5,rely = 0.5, relwidth = 0.9, relheight = 1, anchor = 'center')
+  
+
   root.mainloop()
 
 if __name__ == "__main__":
