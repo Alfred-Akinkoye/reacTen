@@ -8,6 +8,7 @@ WIDTH = 600
 
 mode = 20
 
+global root
 root = tk.Tk()
 #This function calls  functions " WaitPage2" and "WaitPage
 #"WaitPage2" displays a waiting page for Single Player mode
