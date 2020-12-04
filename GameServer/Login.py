@@ -28,12 +28,12 @@ def testLogin(entry1,entry2):
     else:
         print("invalid entry")
 
-root = tk.Tk()
+
 
 
 def Login():
 #makes a container that holds the button( used for initial screen size)
-
+  root = tk.Tk()
   root.title("Python GUI")
   canvas = tk.Canvas(root,height = HEIGHT, width = WIDTH )
   canvas.pack()
