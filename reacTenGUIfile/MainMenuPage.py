@@ -40,15 +40,15 @@ def history():
     if hist:
 
         from gameengine import dbconn
-        from gameengine import match_id,users
+         
 
         temp = tk.Tk()
         temp.title('GAME DATA')
         cursor = dbconn.cursor();
-        text = "SELECT * FROM USERS"+str(users)
+        text = "SELECT * FROM HISTORY"
         cursor.execute(text)
         myresult = cursor.fetchall()
-        prequel = [("Username","Password")]
+        prequel = [("Username","GameNo","Result","GameMode","Score")]
         final = prequel+myresult
         myresult = final
         total_rows=len(myresult)
