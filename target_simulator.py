@@ -18,7 +18,7 @@ def send_status():
     try:
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
-        print (status)
+        print ('The target status is: '+ str(status))
         print (response.status, response.reason)
         data = response.read()
         conn.close()
@@ -34,8 +34,8 @@ def send_hit():
     try:
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
-        print (hit)
-        print (ballForce)
+        print ("The player hit the target")
+        print ('The force of the  shot was: ' + str(ballForce))
         print (response.status, response.reason)
         data = response.read()
         conn.close()
@@ -51,7 +51,8 @@ def send_miss():
     try:
         conn.request("POST", "/update", params, headers)
         response = conn.getresponse()
-        print (hit)
+        print ("The player did not hit the target")
+        print ('The force of the  shot was: ' + str(ballForce))
         print (response.status, response.reason)
         data = response.read()
         conn.close()
@@ -103,7 +104,7 @@ def target_action(threadName,delay):
                 if received == 'shootBall':
                     hit_or_miss()
                 if received == 'startGame':
-                        print('The Target is initializing...')   
+                        print('The Target is initialized')   
                 if received == 'finishGame':
                         print('The Target is getting deactivated')    
                 time.sleep(delay)            
@@ -115,7 +116,7 @@ if __name__ == "__main__":
     #create 2 threads
     try:
         _thread.start_new_thread(updateStatus, ("Thread-1", 12, ) )
-        _thread.start_new_thread(target_action, ("Thread-2", 4, ) )
+        _thread.start_new_thread(target_action, ("Thread-2", 2, ) )
     except KeyboardInterrupt:
         print('Done')
             

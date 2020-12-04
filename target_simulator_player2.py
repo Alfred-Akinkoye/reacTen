@@ -8,10 +8,7 @@ import json
 import random
 
 #API keys
-channelD1write = "R9H809YX4MUSNPG1"
-channelD1read = "OX910MD5LNMRZO17"
-channelD2write = "ZDILVXVB0LFJA9AK"
-channelD2read = "ZXWNO235JBIYOK0T"
+hitwrite = "ZDILVXVB0LFJA9AK"
 statuswrite = "Y5CBDQ1TLE8WPFBZ"
 
 def send_status():
