@@ -27,7 +27,7 @@ def history():
     if hist:
         from GameEngine import dbconn
         temp = tk.Toplevel()
-        temp.title('HISTORY DATA')
+        temp.title('HISTORY DATA') 
         cursor = dbconn.cursor();
         text = "SELECT * FROM HISTORY"
         cursor.execute(text)
