@@ -20,8 +20,11 @@ SERVOMOTORERROR = 10
 PROXIMITYSENSORERROR = 1
 UNSAFEERROR = 2
 
+
 PAUSE = 2    #Seconds
 
+MESSAGEPERIOD = 2
+STATUSPERIOD = 12
 
 ##Keys
 #keyC1r = "KSW0O5SZVNZP6LC9"            #MessageChannel
@@ -184,8 +187,8 @@ if __name__ == "__main__":
         
         try:
             shooter = ballShooterServer()
-            thread.start_new_thread(shooter.updateStatus, ("Thread-1", 12, ) )
-            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", 2, ) )
+            thread.start_new_thread(shooter.updateStatus, ("Thread-1", STATUSPERIOD, ) )
+            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", MESSAGEPERIOD, ) )
             
         except KeyboardInterrupt:
             print('Done')
