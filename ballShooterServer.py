@@ -10,12 +10,13 @@ import json
 
 import ballShooter as bl
 import servoMotor as servo
+import proximitySensorSimulator as px
 
 MAX_BALLS = 6
 DEF_BALLS = 3
 NOERROR = 0
 
-PAUSE = 2    #Seconds
+PAUSE = 3    #Seconds
 
 
 ##Keys
@@ -37,7 +38,7 @@ class ballShooterServer:
         self.statusMessage = statusMessage
         
         self.shooter = bl.ballShooter()
-        #initialize Proximity Sensor
+        self.proximi = px.proximitySensorSimulator()
         self.servo = servo.servoMotor() 
         
         
@@ -160,7 +161,25 @@ class ballShooterServer:
                 time.sleep(delay)            
     
         except KeyboardInterrupt:
-            print('Done status')        
+            print('Done status')       
+            
+    def sendStatus(self):
+        
+        statusMessage = self.status()
+        
+        print("The status sent is: " + str(statusMessage))
+        
+        params = urllib.urlencode({'field1': statusMessage, 'key':statusChannel}) 
+        headers = {"Content-typZZe": "application/x-www-form-urlencoded","Accept": "text/plain"}
+        conn = httplib.HTTPConnection("api.thingspeak.com:80")
+        try:
+            conn.request("POST", "/update", params, headers)
+            response = conn.getresponse()
+            print(response.status, response.reason)
+            data = response.read()
+            conn.close()
+        except:
+            print ("connection failed")
       
 if __name__ == "__main__":
         
