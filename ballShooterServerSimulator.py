@@ -13,7 +13,12 @@ import numpy.random as rn
 
 MAX_BALLS = 6
 DEF_BALLS = 3
+
 NOERROR = 0
+BALLSHOOTERERROR = 100
+SERVOMOTORERROR = 10
+PROXIMITYSENSORERROR = 1
+UNSAFEERROR = 2
 
 PAUSE = 2    #Seconds
 
@@ -114,18 +119,18 @@ class ballShooterServer:
         return last_entry_id, get_data  
     
     def statusSimulation(self):
-        errorMessa = 0
+        errorMessa = 0 
         
-        shooter = [0, 100]
-        prob = [1, 0]    
+        shooter = [NOERROR, BALLSHOOTERERROR]
+        prob = [1, 0]    #probabilities of happenings
         errorMessa += int(rn.choice(shooter, 1, p = prob))
         
-        servo = [0, 10]
-        prob = [1, 0]    
+        servo = [NOERROR, SERVOMOTORERROR]
+        prob = [1, 0]    #probabilities of happenings
         errorMessa += int(rn.choice(servo, 1, p = prob))      
         
-        proxsensor = [0, 1, 2]
-        prob = [1, 0, 0]    
+        proxsensor = [NOERROR, PROXIMITYSENSORERROR, UNSAFEERROR]
+        prob = [1, 0, 0]    #probabilities of happenings
         errorMessa += int(rn.choice(proxsensor, 1, p = prob))              
         
         return errorMessa
