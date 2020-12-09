@@ -55,6 +55,8 @@ class ballShooterServer:
             errorValue += 10       
             
         #Check Proximity Sensor status
+        proximiStatus = self.proximi.status()
+        errorValue += proximiStatus
         
         self.statusMessage += errorValue
         
@@ -64,7 +66,12 @@ class ballShooterServer:
         if (self.ballsLeft == 0):
             return False
         
-        #check proximity sensor if somebody, then change status and stop action
+        #Somebody in front of the ballshooter
+        if (self.statusMessage == 2):
+            #Abort shot
+            return False
+        
+        
         self.shooter.setSpeed(newSpeed)
         self.servo.ejectBall()
         time.sleep(PAUSE)
@@ -87,12 +94,15 @@ class ballShooterServer:
         self.shooter.turnOn()
         
         #startGame for Proximity Sensor
+        self.proximi.turnOn()
+        
         return True
     
     def finishGame(self):
         
         self.shooter.turnOff()
-        #finishGame for proximity sensor
+        self.proximi.turnOff()
+        
         return True
     
       
