@@ -18,6 +18,9 @@ NOERROR = 0
 
 PAUSE = 3    #Seconds
 
+MESSAGEPERIOD = 2
+STATUSPERIOD = 12
+
 
 ##Keys
 #keyJulianB1r = "59EV92UFH25MFELC"            #MessageChannel
@@ -60,7 +63,7 @@ class ballShooterServer:
         
         self.statusMessage += errorValue
         
-        return self.statusMessage         #Assuming no errors
+        return self.statusMessage         
     
     def shootBall(self, newSpeed):
         if (self.ballsLeft == 0):
@@ -195,8 +198,8 @@ if __name__ == "__main__":
         
         try:
             shooter = ballShooterServer()
-            thread.start_new_thread(shooter.updateStatus, ("Thread-1", 12, ) )
-            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", 2, ) )
+            thread.start_new_thread(shooter.updateStatus, ("Thread-1", STATUSPERIOD, ) )
+            thread.start_new_thread(shooter.decodeMessage, ("Thread-2", MESSAGEPERIOD, ) )
             
         except KeyboardInterrupt:
             print('Done')
