@@ -14,7 +14,12 @@ import proximitySensorSimulator as px
 
 MAX_BALLS = 6
 DEF_BALLS = 3
+
 NOERROR = 0
+BALLSHOOTERERROR = 100
+SERVOMOTORERROR = 10
+PROXIMITYSENSORERROR = 1
+UNSAFEERROR = 2
 
 PAUSE = 3    #Seconds
 
@@ -51,11 +56,11 @@ class ballShooterServer:
         
         shooterStatus = self.shooter.status()
         if(not(shooterStatus)):
-            errorValue += 100
+            errorValue += BALLSHOOTERERROR
             
         servoStatus = self.servo.status()
         if(not(servoStatus)):
-            errorValue += 10       
+            errorValue += SERVOMOTORERROR       
             
         #Check Proximity Sensor status
         proximiStatus = self.proximi.status()
