@@ -97,11 +97,11 @@ def MainMenu():
   exitframe = tk.Frame(root,bg = '#ff99cc',bd = 5)
   exitframe.place(relx = 0.5, rely = 0.45,relwidth = 0.3, relheight = 0.1,anchor = 'n')
 
-  #this label is for the "StartNewGame" button
+  #this label is for the "ExitGame" button
   exitlabel = tk.Label(exitframe)
   exitlabel.place(relx = 0.4, rely =0, relwidth = 0.5, relheight = 1)
 
-  #this is the "StartnewGame" button
+  #this is the "ExitGame" button
   exitbutton = tk.Button(exitframe,text = "Exit Game",font = 40,  fg =  'black', command = lambda: exiting(root))
   exitbutton.place(relx = 0.5,rely = 0.5, relwidth = 0.9, relheight = 1, anchor = 'center')
 
