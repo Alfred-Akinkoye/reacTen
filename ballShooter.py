@@ -48,7 +48,7 @@ class ballShooter:
         actualOutput = interp(newSpeed, [self.lowLimit, self.highLimit],[CALILOW, CALIHIGH])
         
         #Set duty cycle at desired speed
-        self.pwm.ChangeDutyCycle(newSpeed)
+        self.pwm.ChangeDutyCycle(actualOutput)
         self.currSpeed = newSpeed
         sleep(3)
         
