@@ -9,6 +9,8 @@ from numpy import interp
 PWMPIN = 32
 PWMPERIOD = 1000
 
+PAUSE = 3   #Time between DC motor changing speed to servo releasing a ball
+
 #In % units
 OFF = 0
 LOWLIMIT = 0
@@ -50,7 +52,7 @@ class ballShooter:
         #Set duty cycle at desired speed
         self.pwm.ChangeDutyCycle(actualOutput)
         self.currSpeed = newSpeed
-        sleep(3)
+        sleep(PAUSE)
         
         return True
     
